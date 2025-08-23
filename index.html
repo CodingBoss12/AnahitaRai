@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo.png" />
   <title>Anahita Rai</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap');
@@ -20,7 +20,69 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      z-index: 1000;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      background: linear-gradient(90deg, #8da68d, #2a2a2a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav a {
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #2a2a2a;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #8da68d;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #8da68d;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 20px;
     }
 
     h1 {
@@ -83,9 +145,23 @@
   </style>
 </head>
 <body>
-  <h1>ANAHITA RAI</h1>
-  <p>Student • Coder • Doer</p>
-  <button class="btn" onclick="scrollDown()">Explore</button>
+
+  <!-- Navbar -->
+  <header>
+    <div class="logo">AR</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>ANAHITA RAI</h1>
+    <p>Student • Coder • Doer</p>
+    <button class="btn" onclick="scrollDown()">Explore</button>
+  </section>
 
   <script>
     function scrollDown() {
