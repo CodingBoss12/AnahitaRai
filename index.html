@@ -222,11 +222,25 @@
 
     .doodle {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    font-size: 3rem; /* bigger emojis! */
     opacity: 0.4;
     animation: floaty 6s ease-in-out infinite;
     }
+
+    .cursor-aura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(181,204,181,0.4) 0%, rgba(242,248,242,0.1) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(40px);
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    }
+
 
     /* floating animation */
     @keyframes floaty {
@@ -304,27 +318,27 @@
     function toggleMenu() {
       document.getElementById('mobileNav').classList.toggle('active');
     }
-    // ---- Floating Doodles ----
+
+    // Floating Doodles
     const doodleLayer = document.querySelector('.doodle-layer');
+    const doodles = ['💻','🤖','⭐','☁️','🍫','💖','📚','🥤','🍜','📱'];
 
-    // placeholder doodles (replace with boba, maggi, etc. SVG/PNGs later)
-    const doodles = ['💻','🤖','⭐','☁️','🍫','💖','📚','🥤','🍜','🧋','🥭','🍪','🍩','🍦'];
-
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 25; i++) {
     const doodle = document.createElement('div');
     doodle.classList.add('doodle');
     doodle.style.left = Math.random() * 100 + 'vw';
     doodle.style.top = Math.random() * 100 + 'vh';
-    doodle.style.animationDuration = (4 + Math.random() * 6) + 's';
+    doodle.style.animationDuration = (5 + Math.random() * 6) + 's';
     doodle.textContent = doodles[Math.floor(Math.random() * doodles.length)];
     doodleLayer.appendChild(doodle);
     }
 
-    // ---- Cursor Aura ----
+    // Cursor Aura
     const aura = document.querySelector('.cursor-aura');
 
     document.addEventListener('mousemove', e => {
-    aura.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    aura.style.left = e.clientX + 'px';
+    aura.style.top = e.clientY + 'px';
     });
   </script>
 </body>
