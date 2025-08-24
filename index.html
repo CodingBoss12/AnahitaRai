@@ -231,16 +231,17 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(181,204,181,0.7) 0%, rgba(242,248,242,0.2) 70%);
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(181,204,181,0.9) 0%, rgba(242,248,242,0.3) 70%);
     border-radius: 50%;
     pointer-events: none;
-    filter: blur(60px);
-    z-index: 1;
+    filter: blur(80px);
+    z-index: 1000;
     transform: translate(-50%, -50%);
-    transition: width 0.2s ease, height 0.2s ease;
+    mix-blend-mode: screen; /* makes it "glow" over stuff */
     }
+
 
 
 
@@ -321,39 +322,56 @@
       document.getElementById('mobileNav').classList.toggle('active');
     }
 
+    // Floating Doodles Logic
     const doodleLayer = document.querySelector('.doodle-layer');
-    const doodles = ['💻','🤖','⭐','☁️','🍫','🥽','📚','🥤','🍜','📱','🧋','🍦','🍩','🍪','🥭','🏅','🧿','🦚'];
+    const doodles = ['💻','🤖','⭐','☁️','🍫','💖','📚','🥤','🍜','📱'];
 
     const doodleElements = [];
+    const numCols = 5;
+    const numRows = 5;
 
-    // Create doodles
-    for (let i = 0; i < 25; i++) {
-    const doodle = document.createElement('div');
-    doodle.classList.add('doodle');
-    doodle.style.left = Math.random() * 100 + 'vw';
-    doodle.style.top = Math.random() * 100 + 'vh';
-    doodle.style.animationDuration = (5 + Math.random() * 6) + 's';
-    doodle.textContent = doodles[Math.floor(Math.random() * doodles.length)];
-    doodleLayer.appendChild(doodle);
-    doodleElements.push(doodle);
+    // Place doodles in a "grid", but add jitter for randomness
+    for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
+        const doodle = document.createElement('div');
+        doodle.classList.add('doodle');
+        doodle.style.left = (col * 20 + Math.random() * 10) + 'vw';
+        doodle.style.top = (row * 20 + Math.random() * 10) + 'vh';
+        doodle.textContent = doodles[Math.floor(Math.random() * doodles.length)];
+        doodleLayer.appendChild(doodle);
+
+        doodleElements.push({
+        el: doodle,
+        baseX: (col * 20 + Math.random() * 10) * window.innerWidth / 100,
+        baseY: (row * 20 + Math.random() * 10) * window.innerHeight / 100
+        });
+    }
     }
 
-    // Cursor Aura
     const aura = document.querySelector('.cursor-aura');
 
+    // Make doodles run away from cursor
     document.addEventListener('mousemove', e => {
-    // Move aura
     aura.style.left = e.clientX + 'px';
     aura.style.top = e.clientY + 'px';
 
-    // Parallax effect on doodles
-    doodleElements.forEach((doodle, i) => {
-        const speed = (i % 5 + 1) * 0.02; // different speeds for each doodle
-        const x = (window.innerWidth / 2 - e.clientX) * speed;
-        const y = (window.innerHeight / 2 - e.clientY) * speed;
-        doodle.style.transform = `translate(${x}px, ${y}px)`;
+    doodleElements.forEach(d => {
+        const dx = e.clientX - d.baseX;
+        const dy = e.clientY - d.baseY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+
+        if (dist < 200) { 
+        // push doodles away from cursor
+        const angle = Math.atan2(dy, dx);
+        const offset = (200 - dist) * 1.2;
+        d.el.style.transform = `translate(${ -Math.cos(angle) * offset }px, ${ -Math.sin(angle) * offset }px)`;
+        } else {
+        // return doodle to base spot
+        d.el.style.transform = `translate(0px, 0px)`;
+        }
     });
     });
+
   </script>
 </body>
 </html>
