@@ -268,6 +268,113 @@
     transition: transform 0.1s ease-out;
     }
 
+    .nav-links a {
+    position: relative;
+    padding: 8px 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+    background: rgba(181,204,181,0.3);
+    box-shadow: 0 0 15px rgba(141,166,141,0.6);
+    }
+
+    .nav-links a.active {
+    background: rgba(181,204,181,0.5);
+    box-shadow: 0 0 20px rgba(141,166,141,0.8);
+    font-weight: bold;
+    }
+
+    /* Navbar */
+    .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    }
+
+    /* Logo */
+    .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a5c4a;
+    }
+
+    /* Links */
+    .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    }
+
+    .nav-links li {
+    display: inline-block;
+    }
+
+    .nav-links a {
+    position: relative;
+    padding: 8px 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    color: #4a5c4a;
+    text-decoration: none;
+    font-weight: 500;
+    }
+
+    /* Hover + Glow */
+    .nav-links a:hover {
+    background: rgba(181,204,181,0.3);
+    box-shadow: 0 0 15px rgba(141,166,141,0.6);
+    }
+
+    /* Active highlight */
+    .nav-links a.active {
+    background: rgba(181,204,181,0.5);
+    box-shadow: 0 0 20px rgba(141,166,141,0.8);
+    font-weight: bold;
+    }
+
+    /* Hamburger menu (hidden by default) */
+    .hamburger {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    }
+
+    /* Responsive magic */
+    @media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 30px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+    }
+
+
+
+
   </style>
 </head>
 <body>
@@ -279,13 +386,17 @@
   <header>
     <div class="nav-container">
       <div class="logo">AR</div>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-        <a href="#blog">Blog</a>
-        <a href="#gallery">Gallery</a>
+      <nav class="navbar">
+        <div class="logo">AR</div>
+        <div class="hamburger">☰</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
       </nav>
+
       <div class="hamburger" onclick="toggleMenu()">
         <span></span>
         <span></span>
@@ -299,9 +410,29 @@
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
-    <a href="#blog">Blog</a>
     <a href="#gallery">Gallery</a>
   </div>
+
+  <section id="about">
+    <h1>About Me</h1>
+    <p>Hi, I'm Anahita 👋 I'm a student, coder, and robotics/Science Olympiad enjoyer!</p>
+  </section>
+
+  <section id="projects">
+    <h1>Projects</h1>
+    <p>Cool things I’ve built will go here 💻🤖</p>
+  </section>
+
+  <section id="gallery">
+    <h1>Gallery</h1>
+    <p>Photos, doodles, and more artsy things ✨</p>
+  </section>
+
+  <section id="contact">
+    <h1>Contact</h1>
+    <p>Reach out to me here 📬</p>
+  </section>
+
 
   <!-- Hero -->
   <section class="hero">
@@ -371,6 +502,59 @@
         }
     });
     });
+    // Smooth scroll
+    document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+    });
+
+    // Active nav highlight
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll(".nav-links a");
+
+    window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - sectionHeight / 3) {
+        current = section.getAttribute("id");
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+        }
+    });
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        // close menu on mobile after click
+        document.querySelector('.nav-links').classList.remove('show');
+    });
+    });
+
+    // Hamburger toggle
+    document.querySelector('.hamburger').addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.toggle('show');
+    });
+
+
+
 
   </script>
 </body>
