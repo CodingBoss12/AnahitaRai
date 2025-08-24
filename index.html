@@ -231,15 +231,17 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(181,204,181,0.4) 0%, rgba(242,248,242,0.1) 70%);
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(181,204,181,0.7) 0%, rgba(242,248,242,0.2) 70%);
     border-radius: 50%;
     pointer-events: none;
-    filter: blur(40px);
+    filter: blur(60px);
     z-index: 1;
     transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease;
     }
+
 
 
     /* floating animation */
@@ -319,10 +321,12 @@
       document.getElementById('mobileNav').classList.toggle('active');
     }
 
-    // Floating Doodles
     const doodleLayer = document.querySelector('.doodle-layer');
-    const doodles = ['💻','🤖','⭐','☁️','🍫','💖','📚','🥤','🍜','📱'];
+    const doodles = ['💻','🤖','⭐','☁️','🍫','🥽','📚','🥤','🍜','📱','🧋','🍦','🍩','🍪','🥭','🏅','🧿','🦚'];
 
+    const doodleElements = [];
+
+    // Create doodles
     for (let i = 0; i < 25; i++) {
     const doodle = document.createElement('div');
     doodle.classList.add('doodle');
@@ -331,14 +335,24 @@
     doodle.style.animationDuration = (5 + Math.random() * 6) + 's';
     doodle.textContent = doodles[Math.floor(Math.random() * doodles.length)];
     doodleLayer.appendChild(doodle);
+    doodleElements.push(doodle);
     }
 
     // Cursor Aura
     const aura = document.querySelector('.cursor-aura');
 
     document.addEventListener('mousemove', e => {
+    // Move aura
     aura.style.left = e.clientX + 'px';
     aura.style.top = e.clientY + 'px';
+
+    // Parallax effect on doodles
+    doodleElements.forEach((doodle, i) => {
+        const speed = (i % 5 + 1) * 0.02; // different speeds for each doodle
+        const x = (window.innerWidth / 2 - e.clientX) * speed;
+        const y = (window.innerHeight / 2 - e.clientY) * speed;
+        doodle.style.transform = `translate(${x}px, ${y}px)`;
+    });
     });
   </script>
 </body>
