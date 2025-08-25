@@ -41,5 +41,75 @@
   </section>
 
   <script src="script.js"></script>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>ANAHITA RAI</h1>
+    <p>Student • Coder • Human</p>
+    <button class="btn" onclick="scrollDown()">Explore</button>
+  </section>
+
+  <script>
+    function scrollDown() {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    function toggleMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+
+    // Floating Doodles Logic
+    const doodleLayer = document.querySelector('.doodle-layer');
+    const doodles = ['💻','🤖','⭐','☁️','🍫','🥽','📚','🥤','🍜','📱','🧋','🍦','🍩','🍪','🥭','🏅','🧿','🦚'];
+
+    const doodleElements = [];
+    const numCols = 5;
+    const numRows = 5;
+
+    // Place doodles in a "grid", but add jitter for randomness
+    for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
+        const doodle = document.createElement('div');
+        doodle.classList.add('doodle');
+        doodle.style.left = (col * 20 + Math.random() * 10) + 'vw';
+        doodle.style.top = (row * 20 + Math.random() * 10) + 'vh';
+        doodle.textContent = doodles[Math.floor(Math.random() * doodles.length)];
+        doodleLayer.appendChild(doodle);
+
+        doodleElements.push({
+        el: doodle,
+        baseX: (col * 20 + Math.random() * 10) * window.innerWidth / 100,
+        baseY: (row * 20 + Math.random() * 10) * window.innerHeight / 100
+        });
+    }
+    }
+
+    const aura = document.querySelector('.cursor-aura');
+
+    // Make doodles run away from cursor
+    document.addEventListener('mousemove', e => {
+    aura.style.left = e.clientX + 'px';
+    aura.style.top = e.clientY + 'px';
+
+    doodleElements.forEach(d => {
+        const dx = e.clientX - d.baseX;
+        const dy = e.clientY - d.baseY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+
+        if (dist < 200) { 
+        // push doodles away from cursor
+        const angle = Math.atan2(dy, dx);
+        const offset = (200 - dist) * 1.2;
+        d.el.style.transform = `translate(${ -Math.cos(angle) * offset }px, ${ -Math.sin(angle) * offset }px)`;
+        } else {
+        // return doodle to base spot
+        d.el.style.transform = `translate(0px, 0px)`;
+        }
+    });
+    });
+
+  </script>
 </body>
 </html>
