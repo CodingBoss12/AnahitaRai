@@ -446,7 +446,7 @@
   <script>
     function scrollDown() {
       window.scrollTo({
-        top: window.innerHeight,
+      top: document.querySelector('.about-section').offsetTop,
         behavior: 'smooth'
       });
     }
