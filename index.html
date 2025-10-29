@@ -414,7 +414,7 @@
   <section id="about" class="about-section">
     <div class="tabs">
       <button class="tab-btn active" onclick="showTab('aboutme')">About Me</button>
-      <button class="tab-btn" onclick="showTab('howihaveit')">How I Have It</button>
+      <button class="tab-btn" onclick="showTab('howihaveit')">More Information</button>
       <button class="tab-btn" onclick="showTab('notes')">Notes</button>
     </div>
 
@@ -496,6 +496,24 @@
         }
     });
     });
+
+    // --- Tabs Logic ---
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.remove('hidden');
+      event.target.classList.add('active');
+    }
+
+    // --- Notes Save Logic ---
+    const noteArea = document.getElementById('noteArea');
+    if (noteArea) {
+      noteArea.value = localStorage.getItem('myNote') || '';
+      noteArea.addEventListener('input', () => {
+        localStorage.setItem('myNote', noteArea.value);
+      });
+    }
+
 
   </script>
 </body>
